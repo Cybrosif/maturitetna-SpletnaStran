@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Anej\\Code\\trash\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran.csproj": {}
+    "D:\\Anej\\Code\\maturitetna-SpletnaStran\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran.csproj": {}
   },
   "projects": {
-    "D:\\Anej\\Code\\trash\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran.csproj": {
+    "D:\\Anej\\Code\\maturitetna-SpletnaStran\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Anej\\Code\\trash\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran.csproj",
+        "projectUniqueName": "D:\\Anej\\Code\\maturitetna-SpletnaStran\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran.csproj",
         "projectName": "MaturitetnaSpletnaStran",
-        "projectPath": "D:\\Anej\\Code\\trash\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran.csproj",
+        "projectPath": "D:\\Anej\\Code\\maturitetna-SpletnaStran\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran.csproj",
         "packagesPath": "C:\\Users\\anejd\\.nuget\\packages\\",
-        "outputPath": "D:\\Anej\\Code\\trash\\MaturitetnaSpletnaStran\\MaturitetnaSpletnaStran\\obj\\",
+        "outputPath": "D:\\Anej\\Code\\maturitetna-SpletnaStran\\MaturitetnaSpletnaStran\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\anejd\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -43,6 +43,10 @@
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
               "version": "[1.19.4, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[6.0.16, )"
             },
             "System.Data.SqlClient": {
               "target": "Package",

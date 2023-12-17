@@ -16,6 +16,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\Anej\Code\maturitetna-SpletnaStran\MaturitetnaSpletnaStran
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/Anej/Code/maturitetna-SpletnaStran/MaturitetnaSpletnaStran/Pages/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Anej/Code/maturitetna-SpletnaStran/MaturitetnaSpletnaStran/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -24,8 +28,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Anej/Code/maturitetna-SpletnaStran/MaturitetnaSpletnaStran/Pages/ServerInfo.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmVySW5mby5jc2h0bWw=
+[D:/Anej/Code/maturitetna-SpletnaStran/MaturitetnaSpletnaStran/Pages/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nb3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Anej/Code/maturitetna-SpletnaStran/MaturitetnaSpletnaStran/Pages/Shared/_ValidationScriptsPartial.cshtml]

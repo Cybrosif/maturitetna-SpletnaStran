@@ -1,12 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using maturitetna_NovaTestnaStran.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using maturitetna_NovaTestnaStran.Models;
 
 namespace maturitetna_NovaTestnaStran.Controllers
 {
     public class UserManagementController : Controller
     {
-        public IActionResult Index()
+        private readonly ApplicationDbContext _context;
+
+        public UserManagementController(ApplicationDbContext context)
         {
-            return View();
+            _context = context;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var allUsers = _context.Users.ToListAsync();
+            return View(await allUsers);
         }
     }
 }

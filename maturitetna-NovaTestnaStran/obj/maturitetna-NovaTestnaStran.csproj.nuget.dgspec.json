@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Anej\\Code\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran.csproj": {}
+    "D:\\Anej\\Code\\maturitetna-SpletnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran.csproj": {}
   },
   "projects": {
-    "D:\\Anej\\Code\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran.csproj": {
+    "D:\\Anej\\Code\\maturitetna-SpletnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Anej\\Code\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran.csproj",
+        "projectUniqueName": "D:\\Anej\\Code\\maturitetna-SpletnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran.csproj",
         "projectName": "maturitetna-NovaTestnaStran",
-        "projectPath": "D:\\Anej\\Code\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran.csproj",
+        "projectPath": "D:\\Anej\\Code\\maturitetna-SpletnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran.csproj",
         "packagesPath": "C:\\Users\\anejd\\.nuget\\packages\\",
-        "outputPath": "D:\\Anej\\Code\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran\\obj\\",
+        "outputPath": "D:\\Anej\\Code\\maturitetna-SpletnaStran\\maturitetna-NovaTestnaStran\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\anejd\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3OdELuBbHkja7+E1h+7o8iyJpPjm9H88L39lxchdmfGFxxwAejv2fnNIZONWg6muUw2YPnwMXruDy8wh/qvfSA==",
+  "dgSpecHash": "hmg3U+dtec89UuUIjhkTUn6BDGeOSJ0whMLLO7Xr1GdL/Za/EKBbGJr8UVyqEEPyeJFdqw8wOxCAw7mGdGgiBA==",
   "success": true,
-  "projectFilePath": "D:\\Anej\\Code\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran.csproj",
+  "projectFilePath": "D:\\Anej\\Code\\maturitetna-SpletnaStran\\maturitetna-NovaTestnaStran\\maturitetna-NovaTestnaStran.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\anejd\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\anejd\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

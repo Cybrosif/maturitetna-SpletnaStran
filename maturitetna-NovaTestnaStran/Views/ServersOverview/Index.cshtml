@@ -16,13 +16,12 @@
 </div> *@
 
 <head>
-    <!-- ProgressBar.js -->
-    <script src="https://cdn.jsdelivr.net/npm/progressbar.js@1.1.0/dist/progressbar.min.js"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Chart.js-Gauge -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-gauge"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    @* <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> *@
+    <script src="https://unpkg.com/chart.js@2.8.0/dist/Chart.bundle.js"></script>
+    @* <script src="https://cdn.jsdelivr.net/npm/chartjs-gauge"></script> *@
+    <script src="https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.0/progressbar.min.js"></script>
 </head>
 
 <style>
@@ -64,11 +63,11 @@
         margin-top: 105px;
     }
 
-    .main-content {
+    /* .main-content {
         margin-left: 200px;
         margin-top: 50px;
         padding-top: 56px;
-    }
+    } */
 
     .dashboard-item {
         margin: 0 15px 30px 15px;
@@ -106,12 +105,12 @@
         margin: 0 auto;
     }
 </style>
-<div class="sidebar glass">
+@* <div class="sidebar glass">
     <ul class="list-unstyled">
         <li>- Server 1</li>
         <li>- Server 2</li>
     </ul>
-</div>
+</div> *@
 
 <div class="main-content">
     <div class="d-flex flex-wrap justify-content-between">

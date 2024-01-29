@@ -2,8 +2,208 @@
 @{
     ViewData["Title"] = "Index";
 }
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
+    <script src="jquery.lineProgressbar.js"></script>
+</head>
+    <div class="sidebar glass">
+        <ul class="list-unstyled">
+            <li>- Server 1</li>
+            <li>- Server 2</li>
+        </ul>
+    </div>
 
-<div class="dropdown">
+    <div class="main-content">
+        <div class="d-flex flex-wrap justify-content-between">
+            <div class="dashboard-item glass half">
+                <h4>CPU Stanje</h4>
+                <div><canvas id="cpuGauge" class="gauge-chart"></canvas></div>
+            </div>
+            <div class="dashboard-item glass half">
+                <h4>RAM Stanje</h4>
+                <div><canvas id="ramGauge" class="gauge-chart"></canvas></div>
+            </div>
+        </div>
+        <div class="d-flex flex-wrap justify-content-between">
+            <div class="dashboard-item glass quarter">
+                <h4>Stanje DB</h4>
+            </div>
+            <div class="dashboard-item glass quarter">
+                <h4>Run Time</h4>
+            </div>
+            <div class="dashboard-item glass quarter">
+                <h4>Stanje MailServer</h4>
+            </div>
+            <div class="dashboard-item glass quarter">
+                <h4>CPU Cores</h4>
+            </div>
+        </div>
+        <div class="dashboard-item glass full-width">
+            <h4>Trdi disk podatki</h4>
+            <div id="diskProgressContainer"></div>
+        </div>
+        <div class="dashboard-item glass full-width">
+            <h4>Zgodovina</h4>
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-cpu-tab" data-toggle="tab" href="#cpu-content" role="tab" aria-controls="cpu-content" aria-selected="true">CPU</a>
+                    <a class="nav-item nav-link" id="nav-ram-tab" data-toggle="tab" href="#ram-content" role="tab" aria-controls="ram-content" aria-selected="false">RAM</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="cpu-content" role="tabpanel" aria-labelledby="nav-cpu-tab">
+                    <canvas id="cpuHistoryChart"></canvas>
+                </div>
+                <div class="tab-pane fade" id="ram-content" role="tabpanel" aria-labelledby="nav-ram-tab">
+                    <canvas id="ramHistoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/chart.js@2.8.0/dist/Chart.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-gauge"></script>
+    <script src="https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.0/progressbar.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var cpuHistoryChart = createHistoryChart('cpuHistoryChart', [6, 5, 8, 3, 5, 1, 4], 'CPU Usage');
+        var ramHistoryChart;
+
+        // GLEDA KIR KURCEV TAB JE OFJEN
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var activeTab = $(e.target).attr('href');
+
+            if (activeTab === '#ram-content') {
+                if (!ramHistoryChart) {
+                    ramHistoryChart = createHistoryChart('ramHistoryChart', [28, 48, 40, 19, 86, 27, 90], 'RAM Usage');
+                } else {
+                    ramHistoryChart.update();
+                }
+            } else if (activeTab === '#cpu-content') {
+                cpuHistoryChart.update();
+            }
+        });
+
+        initializeGauges();
+        initializeDiskProgressBar();
+    });
+
+    function initializeGauges() {
+        // CPU Gauge
+        var cpuGaugeCtx = document.getElementById("cpuGauge").getContext("2d");
+        var cpuGauge = new Chart(cpuGaugeCtx, gaugeChartConfig(100));
+        // RAM Gauge
+        var ramGaugeCtx = document.getElementById("ramGauge").getContext("2d");
+        var ramGauge = new Chart(ramGaugeCtx, gaugeChartConfig(50));
+    }
+
+    function gaugeChartConfig(value) {
+        return {
+            type: 'gauge',
+            data: {
+                datasets: [{
+                    value: value,
+                    minValue: 0,
+                    maxValue: 100,
+                    data: [33, 66, 100],
+                    backgroundColor: [
+                        "rgba(75, 192, 192, 0.5)", //0-33
+                        "rgba(255, 205, 86, 0.5)", //34-66
+                        "rgba(255, 99, 132, 0.5)"  //67-100
+                    ]
+                }]
+            },
+            options: gaugeChartOptions()
+        };
+    }
+
+    function gaugeChartOptions() {
+        return {
+            needle: {
+                radiusPercentage: 15,
+                widthPercentage: 3.2,
+                lengthPercentage: 80,
+                color: 'rgba(0, 0, 0, 1)'
+            },
+            valueLabel: {
+                display: true,
+                formatter: (value) => Math.round(value) + '%',
+                color: 'rgba(255, 255, 255, 1)',
+                backgroundColor: 'rgba(0, 0, 0, 1)',
+                text: 3,
+                borderRadius: 5,
+                padding: { top: 10, bottom: 10 }
+            }
+        };
+    }
+
+    function initializeDiskProgressBar() {
+        var usedSpace = 25;
+        var totalSpace = 100;
+        var usedPercentage = usedSpace / totalSpace; // Racuna procente
+
+        var bar = new ProgressBar.Line('#diskProgressContainer', {
+            strokeWidth: 1, //Debelina kurcevga traka
+            easing: 'easeInOut',
+            duration: 1400,
+            color: '#007bff',
+            trailColor: '#eee',
+            trailWidth: 1,
+            svgStyle: { width: '100%', height: '100%' },
+            text: {
+                style: {
+                    color: '#999',
+                    position: 'absolute',
+                    right: '5%',
+                    top: '30px',
+                    padding: 0,
+                    margin: 0,
+                    transform: null
+                },
+                autoStyleContainer: false
+            },
+            from: { color: '#FFEA82' },
+            to: { color: '#ED6A5A' },
+            step: (state, bar) => {
+                bar.setText(usedSpace + ' / ' + totalSpace + ' GB');
+            }
+        });
+
+        bar.animate(usedPercentage);
+    }
+
+    function createHistoryChart(canvasId, chartData, chartLabel) {
+        return new Chart(document.getElementById(canvasId), {
+            type: 'bar',
+            data: {
+                labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00'],
+                datasets: [{
+                    label: chartLabel,
+                    data: chartData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+</script>
+@* <div class="dropdown">
     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
         <p>@Model.Server.ServerName</p>
     </a>
@@ -13,6 +213,6 @@
             <li><a class="dropdown-item" asp-controller="ServersOverview" asp-action="" asp-route-id="@item.Id">@item.ServerName</a></li>
         }
     </ul>
-</div>
+</div> *@
 
 

@@ -16,12 +16,12 @@
 </div> *@
 
 <head>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    @* <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> *@
+    @*<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    $1$ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> #1#
     <script src="https://unpkg.com/chart.js@2.8.0/dist/Chart.bundle.js"></script>
-    @* <script src="https://cdn.jsdelivr.net/npm/chartjs-gauge"></script> *@
+    $1$ <script src="https://cdn.jsdelivr.net/npm/chartjs-gauge"></script> #1#
     <script src="https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.0/progressbar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.0/progressbar.min.js"></script>*@
 </head>
 
 <style>
@@ -179,10 +179,53 @@
                 cpuHistoryChart.update();
             }
         });
-
+        connectToMQTT(8080);
         initializeGauges();
         initializeDiskProgressBar();
     });
+    
+    function connectToMQTT(port) {
+                let connected = false;
+                const client = mqtt.connect('ws://test.mosquitto.org:' + port);
+    
+                client.on("connect", function () {
+                    console.log("Connected to MQTT broker over WebSocket on port " + port);
+                    client.subscribe("test123");
+                    connected = true;
+                });
+                client.on("message", function (topic, message) {
+                    try{
+                        const data = JSON.parse(message.toString());
+                        updateGraphs(data);
+                    } catch (e){
+                        
+                    }
+                });
+    
+                setTimeout(function () {
+                    if (!connected) {
+                        console.error("Failed to establish MQTT connection on port ");
+                        if (port == 8080) {
+                            connectToMQTT(8081);
+                        } else if (port == 8081) {
+                            connectToMQTT(8080);
+                        }
+                        client.end();
+                    }
+                }, 5000);
+            }
+            
+    function updateGraphs(valuesInJson) {
+        console.log(parseFloat(valuesInJson.CpuUsage).toFixed(2));
+        console.log(valuesInJson.CpuUsage);
+        
+        updateGauge('cpuGauge', parseFloat(valuesInJson.CpuUsage).toFixed(2));
+    }
+    
+    function updateGauge(gaugeId, value) {
+        
+    }
+
 
     function initializeGauges() {
         // CPU Gauge

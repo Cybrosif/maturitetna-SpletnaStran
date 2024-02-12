@@ -141,19 +141,22 @@
         <h4>Trdi disk podatki</h4>
         <div id="diskProgressContainer"></div>
     </div>
+    
     <div class="dashboard-item glass full-width">
         <h4>Zgodovina</h4>
-        <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-cpu-tab" data-toggle="tab" href="#cpu-content" role="tab" aria-controls="cpu-content" aria-selected="true">CPU</a>
-                <a class="nav-item nav-link" id="nav-ram-tab" data-toggle="tab" href="#ram-content" role="tab" aria-controls="ram-content" aria-selected="false">RAM</a>
-            </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="cpu-content" role="tabpanel" aria-labelledby="nav-cpu-tab">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="cpu-tab" data-bs-toggle="tab" data-bs-target="#cpu" type="button" role="tab" aria-controls="cpu" aria-selected="true">Cpu</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="ram-tab" data-bs-toggle="tab" data-bs-target="#ram" type="button" role="tab" aria-controls="ram" aria-selected="false">Ram</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="cpu" role="tabpanel" aria-labelledby="cpu-tab">
                 <canvas id="cpuHistoryChart"></canvas>
             </div>
-            <div class="tab-pane fade" id="ram-content" role="tabpanel" aria-labelledby="nav-ram-tab">
+            <div class="tab-pane fade" id="ram" role="tabpanel" aria-labelledby="ram-tab">
                 <canvas id="ramHistoryChart"></canvas>
             </div>
         </div>
@@ -162,183 +165,190 @@
 
 <script>
     $(document).ready(function () {
-        var cpuHistoryChart = createHistoryChart('cpuHistoryChart', [6, 5, 8, 3, 5, 1, 4], 'CPU Usage');
-        var ramHistoryChart;
-
-        // GLEDA KIR KURCEV TAB JE OFJEN
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            var activeTab = $(e.target).attr('href');
-
-            if (activeTab === '#ram-content') {
-                if (!ramHistoryChart) {
-                    ramHistoryChart = createHistoryChart('ramHistoryChart', [28, 48, 40, 19, 86, 27, 90], 'RAM Usage');
-                } else {
-                    ramHistoryChart.update();
-                }
-            } else if (activeTab === '#cpu-content') {
-                cpuHistoryChart.update();
-            }
-        });
+        var cpuGaugeInstance, ramGaugeInstance, cpuHistoryInstance, ramHistoryInstance, diskProgressBarInstance;
+        initializeGraphs();
         connectToMQTT(8080);
-        initializeGauges();
-        initializeDiskProgressBar();
-    });
-    
-    function connectToMQTT(port) {
-                let connected = false;
-                const client = mqtt.connect('ws://test.mosquitto.org:' + port);
-    
-                client.on("connect", function () {
-                    console.log("Connected to MQTT broker over WebSocket on port " + port);
-                    client.subscribe("test123");
-                    connected = true;
-                });
-                client.on("message", function (topic, message) {
-                    try{
-                        const data = JSON.parse(message.toString());
-                        updateGraphs(data);
-                    } catch (e){
-                        
-                    }
-                });
-    
-                setTimeout(function () {
-                    if (!connected) {
-                        console.error("Failed to establish MQTT connection on port ");
-                        if (port == 8080) {
-                            connectToMQTT(8081);
-                        } else if (port == 8081) {
-                            connectToMQTT(8080);
-                        }
-                        client.end();
-                    }
-                }, 5000);
+          
+        function connectToMQTT(port) {
+                        let connected = false;
+                        const client = mqtt.connect('ws://test.mosquitto.org:' + port);
+            
+                        client.on("connect", function () {
+                            console.log("Connected to MQTT broker over WebSocket on port " + port);
+                            client.subscribe("test123");
+                            connected = true;
+                        });
+                        client.on("message", function (topic, message) {
+                            try{
+                                const data = JSON.parse(message.toString());
+                                updateGraphs(data);
+                            } catch (e){
+                                
+                            }
+                        });
+            
+                        setTimeout(function () {
+                            if (!connected) {
+                                console.error("Failed to establish MQTT connection on port ");
+                                if (port == 8080) {
+                                    connectToMQTT(8081);
+                                } else if (port == 8081) {
+                                    connectToMQTT(8080);
+                                }
+                                client.end();
+                            }
+                        }, 5000);
             }
             
-    function updateGraphs(valuesInJson) {
-        console.log(parseFloat(valuesInJson.CpuUsage).toFixed(2));
-        console.log(valuesInJson.CpuUsage);
-        
-        updateGauge('cpuGauge', parseFloat(valuesInJson.CpuUsage).toFixed(2));
-    }
-    
-    function updateGauge(gaugeId, value) {
-        
-    }
-
-
-    function initializeGauges() {
-        // CPU Gauge
-        var cpuGaugeCtx = document.getElementById("cpuGauge").getContext("2d");
-        var cpuGauge = new Chart(cpuGaugeCtx, gaugeChartConfig(100));
-        // RAM Gauge
-        var ramGaugeCtx = document.getElementById("ramGauge").getContext("2d");
-        var ramGauge = new Chart(ramGaugeCtx, gaugeChartConfig(50));
-
-       
-    }
-
-    function gaugeChartConfig(value) {
-        return {
-            type: 'gauge',
-            data: {
-                datasets: [{
-                    value: value,
-                    minValue: 0,
-                    maxValue: 100,
-                    data: [33, 66, 100],
-                    backgroundColor: [
-                        "rgba(75, 192, 192, 0.5)", //0-33
-                        "rgba(255, 205, 86, 0.5)", //34-66
-                        "rgba(255, 99, 132, 0.5)"  //67-100
-                    ]
-                }]
-            },
-            options: gaugeChartOptions()
-        };
-    }
-
-    function gaugeChartOptions() {
-        return {
-            needle: {
-                radiusPercentage: 15,
-                widthPercentage: 3.2,
-                lengthPercentage: 80,
-                color: 'rgba(0, 0, 0, 1)'
-            },
-            valueLabel: {
-                display: true,
-                formatter: (value) => Math.round(value) + '%',
-                color: 'rgba(255, 255, 255, 1)',
-                backgroundColor: 'rgba(0, 0, 0, 1)',
-                text: 3,
-                borderRadius: 5,
-                padding: { top: 10, bottom: 10 }
+        function initializeGraphs(){
+            //CPU
+            var cpuGaugeCtx = document.getElementById("cpuGauge").getContext("2d");
+            cpuGaugeInstance = new Chart(cpuGaugeCtx, gaugeChartConfig(100));
+            
+            // RAM Gauge
+            var ramGaugeCtx = document.getElementById("ramGauge").getContext("2d");
+            ramGaugeInstance = new Chart(ramGaugeCtx, gaugeChartConfig(50));
+            
+            var diskProgressContainer = document.getElementById("diskProgressContainer");
+            diskProgressBarInstance = new ProgressBar.Line(diskProgressContainer, diskProgressBarConfig());
+            diskProgressBarInstance.animate(0.25);
+            
+            var cpuHistoryCtx = document.getElementById("cpuHistoryChart").getContext("2d");
+            cpuHistoryInstance = createHistoryChart(cpuHistoryCtx, [6, 5, 8, 3, 5, 1, 4], 'CPU Usage');
+            
+            @*var ramHistoryCtx = document.getElementById("ramHistoryChart").getContext("2d");
+            ramHistoryInstance = createHistoryChart(ramHistoryCtx, [28, 48, 40, 19, 86, 27, 90], 'RAM Usage');*@
+            
+            
             }
-        };
-    }
-
-    function initializeDiskProgressBar() {
-        var usedSpace = 25;
-        var totalSpace = 100;
-        var usedPercentage = usedSpace / totalSpace; // Racuna procente
-
-        var bar = new ProgressBar.Line('#diskProgressContainer', {
-            strokeWidth: 1, //Debelina kurcevga traka
-            easing: 'easeInOut',
-            duration: 1400,
-            color: '#007bff',
-            trailColor: '#eee',
-            trailWidth: 1,
-            svgStyle: { width: '100%', height: '100%' },
-            text: {
-                style: {
-                    color: '#999',
-                    position: 'absolute',
-                    right: '5%',
-                    top: '30px',
-                    padding: 0,
-                    margin: 0,
-                    transform: null
-                },
-                autoStyleContainer: false
-            },
-            from: { color: '#FFEA82' },
-            to: { color: '#ED6A5A' },
-            step: (state, bar) => {
-                bar.setText(usedSpace + ' / ' + totalSpace + ' GB');
+            
+        function gaugeChartConfig(value) {
+                return {
+                    type: 'gauge',
+                    data: {
+                        datasets: [{
+                            value: value,
+                            minValue: 0,
+                            maxValue: 100,
+                            data: [33, 66, 100],
+                            backgroundColor: [
+                                "rgba(75, 192, 192, 0.5)", //0-33
+                                "rgba(255, 205, 86, 0.5)", //34-66
+                                "rgba(255, 99, 132, 0.5)"  //67-100
+                            ]
+                        }]
+                    },
+                    options: gaugeChartOptions()
+                };
             }
-        });
+        
+            function gaugeChartOptions() {
+                return {
+                    needle: {
+                        radiusPercentage: 15,
+                        widthPercentage: 3.2,
+                        lengthPercentage: 80,
+                        color: 'rgba(0, 0, 0, 1)'
+                    },
+                    valueLabel: {
+                        display: true,
+                        formatter: (value) => Math.round(value) + '%',
+                        color: 'rgba(255, 255, 255, 1)',
+                        backgroundColor: 'rgba(0, 0, 0, 1)',
+                        text: 3,
+                        borderRadius: 5,
+                        padding: { top: 10, bottom: 10 }
+                    }
+                };
+            }
+            
+            function diskProgressBarConfig() {
+                return {
+                    strokeWidth: 1,
+                    easing: 'easeInOut',
+                    duration: 1400,
+                    color: '#007bff',
+                    trailColor: '#eee',
+                    trailWidth: 1,
+                    svgStyle: { width: '100%', height: '100%' },
+                    text: {
+                        style: {
+                            color: '#999',
+                            position: 'absolute',
+                            right: '5%',
+                            top: '30px',
+                            padding: 0,
+                            margin: 0,
+                            transform: null
+                        },
+                        autoStyleContainer: false
+                    },
+                    from: { color: '#FFEA82' },
+                    to: { color: '#ED6A5A' },
+                    step: (state, bar) => {
+                        // Update the text as needed (e.g., used space / total space)
+                        bar.setText("Update the text here");
+                    }
+                };
+            }
+            
+        function createHistoryChart(canvasContext, chartData, chartLabel) {
+                     return new Chart(canvasContext, {
+                         type: 'bar',
+                         data: {
+                             labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00'],
+                             datasets: [{
+                                 label: chartLabel,
+                                 data: chartData,
+                                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                 borderColor: 'rgba(54, 162, 235, 1)',
+                                 borderWidth: 1
+                             }]
+                         },
+                         options: {
+                             scales: {
+                                 yAxes: [{
+                                     ticks: {
+                                         beginAtZero: true
+                                     }
+                                 }]
+                             },
+                             responsive: true,
+                             maintainAspectRatio: false
+                         }
+                     });
+                 }
+                    
+        function updateGraphs(valuesInJson) { 
+                updateGauge(cpuGaugeInstance, parseFloat(valuesInJson.CpuUsage).toFixed(2));
+                updateGauge(ramGaugeInstance, parseFloat(valuesInJson.UsedMemory).toFixed(2));
+                
+                
+            }
+        
+        function updateGauge(gaugeInstance, value){
+                gaugeInstance.data.datasets[0].value = value;
+                gaugeInstance.update();
+            }
+        
+        $('#myTab button').on('click', function (e) {
+                var tabId = $(this).attr('aria-controls');
+                loadGraph(tabId);
+            });
+        function loadGraph(tabId) {
+                if (tabId === 'cpu') {
 
-        bar.animate(usedPercentage);
-    }
-
-    function createHistoryChart(canvasId, chartData, chartLabel) {
-        return new Chart(document.getElementById(canvasId), {
-            type: 'bar',
-            data: {
-                labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00'],
-                datasets: [{
-                    label: chartLabel,
-                    data: chartData,
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
+                } else if (tabId === 'ram') {
+                    if (!ramHistoryInstance)
+                        {
+                            var ramHistoryCtx = document.getElementById("ramHistoryChart").getContext("2d");
+                            ramHistoryInstance = createHistoryChart(ramHistoryCtx, [28, 48, 40, 19, 86, 27, 90], 'RAM Usage');
+                            console.log("test");
                         }
-                    }]
-                },
-                responsive: true,
-                maintainAspectRatio: false
+                    
+                }
             }
-        });
-    }
+    });
 </script>
 
 

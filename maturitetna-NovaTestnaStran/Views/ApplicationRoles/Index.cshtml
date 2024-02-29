@@ -2,30 +2,96 @@
 @model IEnumerable<IdentityRole>
 
 @{
-	ViewData["Title"] = "App roles";
+    ViewData["Title"] = "App roles";
 }
+<head>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-<h1>Roles:</h1>
-<p>
-	<a asp-action="Create">Craete Role</a>
-</p>
+        .glass {
+            background: rgba(222, 226, 231, 0.407);
+            box-shadow: 0 8px 20px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(1px);
+            -webkit-backdrop-filter: blur(5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>@Html.DisplayNameFor(model => model.Id)</th>
-			<th>@Html.DisplayNameFor(model => model.Name)</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach(var item in Model)
-		{
-			<tr>
-				<td>@Html.DisplayFor(modelItem => item.Id)</td>
-				<td>@Html.DisplayFor(modelItem => item.Name)</td>
-				<td></td>
-			</tr>
-		}
-	</tbody>
-</table>
+        .table {
+            border-collapse: separate;
+            border-spacing: 0 0.5em;
+        }
+
+            .table thead th {
+                background-color: #007bff;
+                color: #fff;
+            }
+
+            .table tbody tr {
+                background-color: #ffffff;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-radius: 5px;
+            }
+
+                .table tbody tr td {
+                    vertical-align: middle;
+                }
+
+                .table tbody tr:hover {
+                    background-color: #f2f2f2;
+                }
+
+        .btn-table-action {
+            border: none;
+            background: none;
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+            .btn-table-action:hover {
+                color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glass">
+            <h1>Roles:</h1>
+            <p>
+                <a asp-action="Create" class="btn btn-primary">Create Role</a>
+            </p>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Id)</th>
+                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Name)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>
+                                <button class="btn-table-action" asp-action="Edit" asp-route-id="@item.Id">Edit</button>
+                                <button class="btn-table-action" asp-action="Delete" asp-route-id="@item.Id">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>

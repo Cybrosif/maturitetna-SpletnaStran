@@ -168,188 +168,163 @@
         var cpuGaugeInstance, ramGaugeInstance, cpuHistoryInstance, ramHistoryInstance, diskProgressBarInstance;
         initializeGraphs();
         connectToMQTT(8080);
-          
-        function connectToMQTT(port) {
-                        let connected = false;
-                        const client = mqtt.connect('ws://test.mosquitto.org:' + port);
-            
-                        client.on("connect", function () {
-                            console.log("Connected to MQTT broker over WebSocket on port " + port);
-                            client.subscribe("test123");
-                            connected = true;
-                        });
-                        client.on("message", function (topic, message) {
-                            try{
-                                const data = JSON.parse(message.toString());
-                                updateGraphs(data);
-                            } catch (e){
-                                
-                            }
-                        });
-            
-                        setTimeout(function () {
-                            if (!connected) {
-                                console.error("Failed to establish MQTT connection on port ");
-                                if (port == 8080) {
-                                    connectToMQTT(8081);
-                                } else if (port == 8081) {
-                                    connectToMQTT(8080);
-                                }
-                                client.end();
-                            }
-                        }, 5000);
+
+        $('#cpu-tab').on('click', function (e) {
+            e.preventDefault();
+            if (!cpuHistoryInstance) {
+                var cpuHistoryCtx = document.getElementById("cpuHistoryChart").getContext("2d");
+                cpuHistoryInstance = createHistoryChart(cpuHistoryCtx, [6, 5, 8, 3, 5, 1, 4], 'CPU Usage');
             }
-            
-        function initializeGraphs(){
-            //CPU
+        });
+
+        $('#ram-tab').on('click', function (e) {
+            e.preventDefault();
+            if (!ramHistoryInstance) {
+                var ramHistoryCtx = document.getElementById("ramHistoryChart").getContext("2d");
+                ramHistoryInstance = createHistoryChart(ramHistoryCtx, [28, 48, 40, 19, 86, 27, 90], 'RAM Usage');
+            }
+        });
+
+        function connectToMQTT(port) {
+            let connected = false;
+            const client = mqtt.connect('ws://test.mosquitto.org:' + port);
+            client.on("connect", function () {
+                client.subscribe("test123");
+                connected = true;
+            });
+            client.on("message", function (topic, message) {
+                const data = JSON.parse(message.toString());
+                updateGraphs(data);
+            });
+            setTimeout(function () {
+                if (!connected) {
+                    if (port == 8080) {
+                        connectToMQTT(8081);
+                    } else if (port == 8081) {
+                        connectToMQTT(8080);
+                    }
+                    client.end();
+                }
+            }, 5000);
+        }
+
+        function initializeGraphs() {
             var cpuGaugeCtx = document.getElementById("cpuGauge").getContext("2d");
             cpuGaugeInstance = new Chart(cpuGaugeCtx, gaugeChartConfig(100));
-            
-            // RAM Gauge
             var ramGaugeCtx = document.getElementById("ramGauge").getContext("2d");
             ramGaugeInstance = new Chart(ramGaugeCtx, gaugeChartConfig(50));
-            
             var diskProgressContainer = document.getElementById("diskProgressContainer");
             diskProgressBarInstance = new ProgressBar.Line(diskProgressContainer, diskProgressBarConfig());
             diskProgressBarInstance.animate(0.25);
-            
             var cpuHistoryCtx = document.getElementById("cpuHistoryChart").getContext("2d");
             cpuHistoryInstance = createHistoryChart(cpuHistoryCtx, [6, 5, 8, 3, 5, 1, 4], 'CPU Usage');
-            
-            @*var ramHistoryCtx = document.getElementById("ramHistoryChart").getContext("2d");
-            ramHistoryInstance = createHistoryChart(ramHistoryCtx, [28, 48, 40, 19, 86, 27, 90], 'RAM Usage');*@
-            
-            
-            }
-            
-        function gaugeChartConfig(value) {
-                return {
-                    type: 'gauge',
-                    data: {
-                        datasets: [{
-                            value: value,
-                            minValue: 0,
-                            maxValue: 100,
-                            data: [33, 66, 100],
-                            backgroundColor: [
-                                "rgba(75, 192, 192, 0.5)", //0-33
-                                "rgba(255, 205, 86, 0.5)", //34-66
-                                "rgba(255, 99, 132, 0.5)"  //67-100
-                            ]
+        }
+
+        function createHistoryChart(canvasContext, chartData, chartLabel) {
+            return new Chart(canvasContext, {
+                type: 'bar',
+                data: {
+                    labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00'],
+                    datasets: [{
+                        label: chartLabel,
+                        data: chartData,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
                         }]
                     },
-                    options: gaugeChartOptions()
-                };
-            }
-        
-            function gaugeChartOptions() {
-                return {
-                    needle: {
-                        radiusPercentage: 15,
-                        widthPercentage: 3.2,
-                        lengthPercentage: 80,
-                        color: 'rgba(0, 0, 0, 1)'
-                    },
-                    valueLabel: {
-                        display: true,
-                        formatter: (value) => Math.round(value) + '%',
-                        color: 'rgba(255, 255, 255, 1)',
-                        backgroundColor: 'rgba(0, 0, 0, 1)',
-                        text: 3,
-                        borderRadius: 5,
-                        padding: { top: 10, bottom: 10 }
-                    }
-                };
-            }
-            
-            function diskProgressBarConfig() {
-                return {
-                    strokeWidth: 1,
-                    easing: 'easeInOut',
-                    duration: 1400,
-                    color: '#007bff',
-                    trailColor: '#eee',
-                    trailWidth: 1,
-                    svgStyle: { width: '100%', height: '100%' },
-                    text: {
-                        style: {
-                            color: '#999',
-                            position: 'absolute',
-                            right: '5%',
-                            top: '30px',
-                            padding: 0,
-                            margin: 0,
-                            transform: null
-                        },
-                        autoStyleContainer: false
-                    },
-                    from: { color: '#FFEA82' },
-                    to: { color: '#ED6A5A' },
-                    step: (state, bar) => {
-                        // Update the text as needed (e.g., used space / total space)
-                        bar.setText("Update the text here");
-                    }
-                };
-            }
-            
-        function createHistoryChart(canvasContext, chartData, chartLabel) {
-                     return new Chart(canvasContext, {
-                         type: 'bar',
-                         data: {
-                             labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00'],
-                             datasets: [{
-                                 label: chartLabel,
-                                 data: chartData,
-                                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                                 borderColor: 'rgba(54, 162, 235, 1)',
-                                 borderWidth: 1
-                             }]
-                         },
-                         options: {
-                             scales: {
-                                 yAxes: [{
-                                     ticks: {
-                                         beginAtZero: true
-                                     }
-                                 }]
-                             },
-                             responsive: true,
-                             maintainAspectRatio: false
-                         }
-                     });
-                 }
-                    
-        function updateGraphs(valuesInJson) { 
-                updateGauge(cpuGaugeInstance, parseFloat(valuesInJson.CpuUsage).toFixed(2));
-                updateGauge(ramGaugeInstance, parseFloat(valuesInJson.UsedMemory).toFixed(2));
-                
-                
-            }
-        
-        function updateGauge(gaugeInstance, value){
-                gaugeInstance.data.datasets[0].value = value;
-                gaugeInstance.update();
-            }
-        
-        $('#myTab button').on('click', function (e) {
-                var tabId = $(this).attr('aria-controls');
-                loadGraph(tabId);
-            });
-        function loadGraph(tabId) {
-                if (tabId === 'cpu') {
-
-                } else if (tabId === 'ram') {
-                    if (!ramHistoryInstance)
-                        {
-                            var ramHistoryCtx = document.getElementById("ramHistoryChart").getContext("2d");
-                            ramHistoryInstance = createHistoryChart(ramHistoryCtx, [28, 48, 40, 19, 86, 27, 90], 'RAM Usage');
-                            console.log("test");
-                        }
-                    
+                    responsive: true,
+                    maintainAspectRatio: false
                 }
-            }
+            });
+        }
+
+        function updateGraphs(valuesInJson) {
+            updateGauge(cpuGaugeInstance, parseFloat(valuesInJson.CpuUsage).toFixed(2));
+            updateGauge(ramGaugeInstance, parseFloat(valuesInJson.UsedMemory).toFixed(2));
+        }
+
+        function updateGauge(gaugeInstance, value) {
+            gaugeInstance.data.datasets[0].value = value;
+            gaugeInstance.update();
+        }
+
+        function gaugeChartConfig(value) {
+            return {
+                type: 'gauge',
+                data: {
+                    datasets: [{
+                        value: value,
+                        minValue: 0,
+                        maxValue: 100,
+                        data: [33, 66, 100],
+                        backgroundColor: [
+                            "rgba(75, 192, 192, 0.5)",
+                            "rgba(255, 205, 86, 0.5)",
+                            "rgba(255, 99, 132, 0.5)"
+                        ]
+                    }]
+                },
+                options: gaugeChartOptions()
+            };
+        }
+
+        function gaugeChartOptions() {
+            return {
+                needle: {
+                    radiusPercentage: 15,
+                    widthPercentage: 3.2,
+                    lengthPercentage: 80,
+                    color: 'rgba(0, 0, 0, 1)'
+                },
+                valueLabel: {
+                    display: true,
+                    formatter: (value) => Math.round(value) + '%',
+                    color: 'rgba(255, 255, 255, 1)',
+                    backgroundColor: 'rgba(0, 0, 0, 1)',
+                    text: 3,
+                    borderRadius: 5,
+                    padding: { top: 10, bottom: 10 }
+                }
+            };
+        }
+
+        function diskProgressBarConfig() {
+            return {
+                strokeWidth: 1,
+                easing: 'easeInOut',
+                duration: 1400,
+                color: '#007bff',
+                trailColor: '#eee',
+                trailWidth: 1,
+                svgStyle: { width: '100%', height: '100%' },
+                text: {
+                    style: {
+                        color: '#999',
+                        position: 'absolute',
+                        right: '5%',
+                        top: '30px',
+                        padding: 0,
+                        margin: 0,
+                        transform: null
+                    },
+                    autoStyleContainer: false
+                },
+                from: { color: '#FFEA82' },
+                to: { color: '#ED6A5A' },
+                step: (state, bar) => {
+                    bar.setText("Update the text here");
+                }
+            };
+        }
     });
 </script>
-
-
 

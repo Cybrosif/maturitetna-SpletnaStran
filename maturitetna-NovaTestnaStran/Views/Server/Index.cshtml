@@ -25,17 +25,12 @@
 
         .table {
             border-collapse: separate;
-            border-spacing: 0;
-            width: 100%;
-            table-layout: fixed;
+            border-spacing: 0 0.5em;
         }
 
             .table thead th {
                 background-color: #007bff;
                 color: #fff;
-                border-radius: 5px;
-                padding: 12px;
-                text-align: left;
             }
 
             .table tbody tr {
@@ -46,34 +41,22 @@
 
                 .table tbody tr td {
                     vertical-align: middle;
-                    padding: 12px;
                 }
 
                 .table tbody tr:hover {
                     background-color: #f2f2f2;
                 }
 
-        .table-action {
+        .btn-table-action {
+            border: none;
+            background: none;
             color: #007bff;
-            text-decoration: none;
+            text-decoration: underline;
+            cursor: pointer;
         }
 
-            .table-action:not(:last-child):after {
-                content: "|";
-                padding: 0 8px;
-            }
-
-            .table-action:hover {
-                text-decoration: underline;
-            }
-
-        .table-responsive {
-            overflow-x: auto;
-            margin-top: 15px;
-        }
-
-            .table-responsive .table {
-                min-width: 750px;
+            .btn-table-action:hover {
+                color: #0056b3;
             }
     </style>
 </head>
@@ -86,45 +69,43 @@
                 <a asp-action="Create" class="btn btn-primary">Create New</a>
             </p>
 
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Domain.Domain)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().ServerName)
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
                         <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().Domain.Domain)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().Id)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().ServerName)
-                            </th>
-                            <th>Actions</th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Domain.Domain)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ServerName)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-table-action">Edit</a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn-table-action">Details</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn-table-action">Delete</a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Domain.Domain)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Id)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ServerName)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="table-action">Edit</a>
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="table-action">Details</a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="table-action">Delete</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </body>

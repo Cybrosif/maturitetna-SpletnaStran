@@ -25,17 +25,13 @@
         }
 
         .table {
-            width: 100%;
             border-collapse: separate;
             border-spacing: 0 0.5em;
-            table-layout: fixed;
         }
 
             .table thead th {
                 background-color: #007bff;
                 color: #fff;
-                border-radius: 5px;
-                padding: 12px;
             }
 
             .table tbody tr {
@@ -46,33 +42,22 @@
 
                 .table tbody tr td {
                     vertical-align: middle;
-                    padding: 12px;
                 }
 
                 .table tbody tr:hover {
                     background-color: #f2f2f2;
                 }
 
-                .table tbody tr td:first-child {
-                    width: 80%; 
-                }
-
-                .table tbody tr td:last-child {
-                    width: 20%; 
-                }
-
-        .table-action {
+        .btn-table-action {
+            border: none;
+            background: none;
             color: #007bff;
-            text-decoration: none;
+            text-decoration: underline;
+            cursor: pointer;
         }
 
-            .table-action:not(:last-child):after {
-                content: "|";
-                padding: 0 8px;
-            }
-
-            .table-action:hover {
-                text-decoration: underline;
+            .btn-table-action:hover {
+                color: #0056b3;
             }
     </style>
 </head>
@@ -102,9 +87,9 @@
                                 @Html.DisplayFor(modelItem => item.Domain)
                             </td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="table-action">Edit</a>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="table-action">Details</a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="table-action">Delete</a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-table-action">Edit</a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn-table-action">Details</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn-table-action">Delete</a>
                             </td>
                         </tr>
                     }

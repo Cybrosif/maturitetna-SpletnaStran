@@ -126,15 +126,19 @@
     <div class="d-flex flex-wrap justify-content-between">
         <div class="dashboard-item glass quarter">
             <h4>Disk</h4>
+            <div class="font-weight-bold">7%</div>
         </div>
         <div class="dashboard-item glass quarter">
             <h4>Run Time</h4>
+            <div class="font-weight-bold">3h 30min 51sec</div>
         </div>
         <div class="dashboard-item glass quarter">
             <h4>Network</h4>
+            <div class="font-weight-bold">5%</div>
         </div>
         <div class="dashboard-item glass quarter">
             <h4>CPU Cores</h4>
+            <div class="font-weight-bold">10</div>
         </div>
     </div>
     <div class="dashboard-item glass full-width">
@@ -210,9 +214,9 @@
 
         function initializeGraphs() {
             var cpuGaugeCtx = document.getElementById("cpuGauge").getContext("2d");
-            cpuGaugeInstance = new Chart(cpuGaugeCtx, gaugeChartConfig(100));
+            cpuGaugeInstance = new Chart(cpuGaugeCtx, gaugeChartConfig(8));
             var ramGaugeCtx = document.getElementById("ramGauge").getContext("2d");
-            ramGaugeInstance = new Chart(ramGaugeCtx, gaugeChartConfig(50));
+            ramGaugeInstance = new Chart(ramGaugeCtx, gaugeChartConfig(10));
             var diskProgressContainer = document.getElementById("diskProgressContainer");
             diskProgressBarInstance = new ProgressBar.Line(diskProgressContainer, diskProgressBarConfig());
             diskProgressBarInstance.animate(0.25);
@@ -321,7 +325,7 @@
                 from: { color: '#FFEA82' },
                 to: { color: '#ED6A5A' },
                 step: (state, bar) => {
-                    bar.setText("Update the text here");
+                    bar.setText("25GB/100GB");
                 }
             };
         }

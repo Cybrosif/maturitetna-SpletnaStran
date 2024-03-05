@@ -3,17 +3,24 @@
     ViewData["Title"] = "Index";
 }
 
- <div class="dropdown">
+ @*<div class="dropdown">
     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
         <p>@Model.Server.ServerName</p>
     </a>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="max-height: 200px; overflow-y: auto;">
         @foreach (var item in Model.Servers)
         {
-            <li><a class="dropdown-item" asp-controller="ServersOverview" asp-action="" asp-route-id="@item.Id">@item.ServerName</a></li>
+            <li><p class="dropdown-item" asp-controller="ServersOverview" asp-action="" asp-route-id="@item.Id">@item.ServerName</p></li>
         }
     </ul>
-</div> 
+ </div> *@
+<select class="form-select" id="serverSelect" aria-label="Default select example">
+  <option selected>Izberite strežnik</option>
+  @foreach (var item in Model.Servers)
+          {
+              <option value="@item.Id">@item.ServerName</option>
+          }
+</select>
 
 <head>
     @*<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -167,15 +174,16 @@
     $(document).ready(function () {
         var cpuGaugeInstance, ramGaugeInstance, cpuHistoryInstance, ramHistoryInstance, diskProgressBarInstance;
         initializeGraphs();
-        connectToMQTT(8080);
+        //connectToMQTT(8080);
           
-        function connectToMQTT(port) {
+        function connectToMQTT(port, serverId) {
                         let connected = false;
                         const client = mqtt.connect('ws://test.mosquitto.org:' + port);
             
                         client.on("connect", function () {
                             console.log("Connected to MQTT broker over WebSocket on port " + port);
-                            client.subscribe("test123");
+                            client.subscribe("test123/"+serverId);
+                            console.log("Subscribetd to test123/" + serverId)
                             connected = true;
                         });
                         client.on("message", function (topic, message) {
@@ -199,6 +207,11 @@
                             }
                         }, 5000);
             }
+            
+        $('#serverSelect').change(function () {
+                var selectedValue = $(this).val();
+                connectToMQTT(8080, selectedValue);    
+            });
             
         function initializeGraphs(){
             //CPU

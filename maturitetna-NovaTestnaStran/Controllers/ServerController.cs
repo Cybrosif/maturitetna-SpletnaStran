@@ -80,7 +80,7 @@ namespace maturitetna_NovaTestnaStran.Controllers
                     }
                 }
             }
-                ViewData["DomainId"] = new SelectList(_context.Domain, "Id", "Domain", serverEntity.DomainId);
+            ViewData["DomainId"] = new SelectList(_context.Domain, "Id", "Domain", serverEntity.DomainId);
             return View(serverEntity);
         }
 

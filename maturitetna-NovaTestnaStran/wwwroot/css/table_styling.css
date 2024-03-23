@@ -55,6 +55,16 @@
 
 
 /*NEKI NEKI*/
+.glass-server {
+    background: rgba(222, 226, 231, 0.407);
+    box-shadow: 0 8px 20px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
 .scrollable-container {
     height: 400px;
@@ -79,7 +89,7 @@
         }
 
 .server-logo {
-    width: 100%; /* Adjust as needed */
-    height: auto; /* Maintain aspect ratio */
+    width: 100%; 
+    height: auto; 
     margin-bottom: 20px;
 }

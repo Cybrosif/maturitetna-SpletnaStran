@@ -36,7 +36,11 @@ namespace maturitetna_NovaTestnaStran.Controllers
                 viewModel.Server = await _context.Servers.FirstOrDefaultAsync(s => s.Id == id);
             }
 
-            viewModel.Servers = await _context.Servers.ToListAsync();
+            string targetDomain = "MojaDomena1";
+        
+            viewModel.Servers = await _context.Servers
+                .Where(server => server.Domain.Domain == targetDomain)
+                .ToListAsync();
 
             return View(viewModel);
         }

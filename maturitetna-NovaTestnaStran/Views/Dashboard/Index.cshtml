@@ -1,5 +1,122 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿
+<style>
+    .glass-server {
+    background: rgba(222, 226, 231, 0.407);
+    box-shadow: 0 8px 20px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .server-logo {
+    width: 100%; 
+    height: auto; 
+    margin-bottom: 20px;
+    }
+    
+    .status-indicator {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        height: 15px; 
+        width: 15px;
+        border-radius: 50%;  
+        border: 2px solid #fff; 
+    }
+    
+    .green-status{
+        background-color: #39BF46;
+    }
+    
+    .red-status{
+        background-color: #D7263D;
+    }
+</style>
+<div class="container">
+    @for (int i = 0; i < Model.Servers.Count; i += 3)
+    {
+        <div class="row mt-4">
+            @for (int j = i; j < i + 3 && j < Model.Servers.Count; j++)
+            {
+                <div class="col-md-4">
+                    <div class="glass-server">
+                        <h3>@Model.Servers[j].ServerName</h3>
+                        <img src="server" alt="Server Logo" class="server-logo">
+                        <div class="status-indicator green-status" data-server-id="@Model.Servers[j].Id"></div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+
+<script>
+ $(document).ready(function () {
+        connectToMQTT(8080);
+        
+         function connectToMQTT(port, serverId) {
+                                       let connected = false;
+                                       const client = mqtt.connect('ws://test.mosquitto.org:' + port);
+                           
+                                       client.on("connect", function () {
+                                           console.log("Connected to MQTT broker over WebSocket on port " + port);
+                                           client.subscribe("MojaDomena1/offlineservers");
+                                           connected = true;
+                                       });
+                                       client.on("message", function (topic, message) {
+                                           try{
+                                               setOfflineServers(message);
+                                               
+                                           } catch (e){
+                                               
+                                           }
+                                       });
+                                      
+                           
+                                       setTimeout(function () {
+                                           if (!connected) {
+                                               console.error("Failed to establish MQTT connection on port ");
+                                               if (port == 8080) {
+                                                   connectToMQTT(8081);
+                                               } else if (port == 8081) {
+                                                   connectToMQTT(8080);
+                                               }
+                                               client.end();
+                                           }
+                                       }, 5000);}
+               function setOfflineServers(jsonData){
+                   resetServerIndicators()
+                   var data = JSON.parse(jsonData);
+                   if (Array.isArray(data)) {
+                               $.each(data, function(index, id) {      
+                                   var $indicator = $(".status-indicator[data-server-id='" + id + "']");
+                                           
+                                           // Check if the element exists
+                                           if ($indicator.length > 0) {
+                                               $indicator.removeClass("green-status").addClass("red-status");
+                                           } else {
+                                               console.error("Element with server ID " + id + " not found.");
+                                           }
+                               });
+                           } 
+               }
+               function resetServerIndicators() {
+                   // Select all elements with the class 'status-indicator'
+                   var $indicators = $(".status-indicator");
+                   
+                   // Loop through each indicator element
+                   $indicators.each(function() {
+                       // Remove 'red-status' class and add 'green-status' class
+                       $(this).removeClass("red-status").addClass("green-status");
+                   });
+               }
+
+          
+    
+    });             
+</script>
+

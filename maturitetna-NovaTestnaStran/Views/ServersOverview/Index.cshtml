@@ -14,13 +14,13 @@
         }
     </ul>
  </div> *@
-<select class="form-select" id="serverSelect" aria-label="Default select example">
+@* <select class="form-select" id="serverSelect" aria-label="Default select example">
   <option selected>Izberite strežnik</option>
   @foreach (var item in Model.Servers)
           {
               <option value="@item.Id">@item.ServerName</option>
           }
-</select>
+</select> *@
 
 <head>
     @*<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -70,12 +70,6 @@
         margin-top: 105px;
     }
 
-    /* .main-content {
-        margin-left: 200px;
-        margin-top: 50px;
-        padding-top: 56px;
-    } */
-
     .dashboard-item {
         margin: 0 15px 30px 15px;
     }
@@ -111,6 +105,20 @@
         max-width: 300px;
         margin: 0 auto;
     }
+
+    .server-switch {
+        display: flex;
+        align-items: center;
+    }
+
+    .server-switch-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 0 5px;
+    }
+
 </style>
 @* <div class="sidebar glass">
     <ul class="list-unstyled">
@@ -118,6 +126,18 @@
         <li>- Server 2</li>
     </ul>
 </div> *@
+
+<div class="server-switch">
+    <button id="prevServer" class="server-switch-btn">&lt;</button>
+    <select class="form-select" id="serverSelect" aria-label="Default select example">
+        <option selected>Izberite strežnik</option>
+        @foreach (var item in Model.Servers)
+        {
+            <option value="@item.Id">@item.ServerName</option>
+        }
+    </select>
+    <button id="nextServer" class="server-switch-btn">&gt;</button>
+</div>
 
 <div class="main-content">
     <div class="d-flex flex-wrap justify-content-between">
@@ -361,7 +381,41 @@
                     
                 }
             }
+        var currentServerIndex = 0;
+        var totalServers = $("#serverSelect option").length - 1;
+
+        function changeServer(index) {
+            $("#serverSelect").prop('selectedIndex', index);
+            $("#serverSelect").change();
+        }
+
+        function animateServerChange() {
+            $('.main-content').fadeOut('fast', function () {
+                $('.main-content').fadeIn('fast');
+            });
+        }
+
+        $("#prevServer").click(function () {
+            if (currentServerIndex > 0) {
+                currentServerIndex--;
+                changeServer(currentServerIndex);
+                animateServerChange();
+            }
+        });
+
+        $("#nextServer").click(function () {
+            if (currentServerIndex < totalServers) {
+                currentServerIndex++;
+                changeServer(currentServerIndex);
+                animateServerChange();
+            }
+        });
+
+        $("#serverSelect").change(function () {
+            currentServerIndex = this.selectedIndex;
+        });
     });
+
 </script>
 
 

@@ -1,19 +1,20 @@
-﻿<div class="scrollable-container">
-    <div class="container">
-        @for (int i = 1; i <= 9; i += 3)
+﻿
+   <div class="container">
+        @for (int i = 1; i <= 100; i += 3)
         {
             <div class="row mt-4">
-                @for (int j = i; j < i + 3 && j <= 9; j++)
+                @for (int j = i; j < i + 3 && j <= 100; j++)
                 {
                     <div class="col-md-4">
                         <div class="glass-server">
                             <h3>Server @j</h3>
                             <img src="@($"server")" alt="@($"Server Logo")" class="server-logo">
                             <p>ŠIPTAR @j...</p>
+                            <div class="status-indicator"></div>
+
                         </div>
                     </div>
                 }
             </div>
         }
     </div>
-</div>

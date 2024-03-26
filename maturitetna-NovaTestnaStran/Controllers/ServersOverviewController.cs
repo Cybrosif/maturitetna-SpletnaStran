@@ -10,6 +10,8 @@ namespace maturitetna_NovaTestnaStran.Controllers
     {
         public List<ServerEntity> Servers { get; set; }
         public ServerEntity Server { get; set; }
+        
+        public string Domain { get; set; }
     }
     public class ServersOverviewController : Controller
     {
@@ -46,6 +48,8 @@ namespace maturitetna_NovaTestnaStran.Controllers
                 .Where(server => server.Domain.Domain == targetDomain)
                 .ToListAsync();
 
+            viewModel.Domain = targetDomain;
+            
             return View(viewModel);
         }
         

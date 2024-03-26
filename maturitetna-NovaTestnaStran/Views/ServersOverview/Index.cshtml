@@ -173,6 +173,7 @@
 <script>
     $(document).ready(function () {
         var cpuGaugeInstance, ramGaugeInstance, cpuHistoryInstance, ramHistoryInstance, diskProgressBarInstance;
+        var targetDomain = ('@Model.Domain');
         initializeGraphs();
         //connectToMQTT(8080);
           
@@ -182,8 +183,8 @@
             
                         client.on("connect", function () {
                             console.log("Connected to MQTT broker over WebSocket on port " + port);
-                            client.subscribe("test123/"+serverId);
-                            console.log("Subscribetd to test123/" + serverId)
+                            client.subscribe(targetDomain+"/"+serverId);
+                            console.log("Subscribetd to " + targetDomain+"/"+serverId)
                             connected = true;
                         });
                         client.on("message", function (topic, message) {

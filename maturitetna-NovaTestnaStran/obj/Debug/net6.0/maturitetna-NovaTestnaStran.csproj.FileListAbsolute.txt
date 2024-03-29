@@ -854,7 +854,6 @@ D:\sola\maturitetnaSpletnaStran\maturitetna-NovaTestnaStran\obj\Debug\net6.0\mat
 D:\sola\maturitetnaSpletnaStran\maturitetna-NovaTestnaStran\obj\Debug\net6.0\maturitetna-NovaTestnaStran.genruntimeconfig.cache
 D:\sola\maturitetnaSpletnaStran\maturitetna-NovaTestnaStran\obj\Debug\net6.0\ref\maturitetna-NovaTestnaStran.dll
 C:\Users\sandi\OneDrive\Documents\Aleksander\School\4-Letnik\Maturitetna\Splet2\maturitetna-SpletnaStran\maturitetna-NovaTestnaStran\bin\Debug\net6.0\appsettings.Development.json
-C:\Users\sandi\OneDrive\Documents\Aleksander\School\4-Letnik\Maturitetna\Splet2\maturitetna-SpletnaStran\maturitetna-NovaTestnaStran\bin\Debug\net6.0\appsettings.json
 C:\Users\sandi\OneDrive\Documents\Aleksander\School\4-Letnik\Maturitetna\Splet2\maturitetna-SpletnaStran\maturitetna-NovaTestnaStran\bin\Debug\net6.0\maturitetna-NovaTestnaStran.staticwebassets.runtime.json
 C:\Users\sandi\OneDrive\Documents\Aleksander\School\4-Letnik\Maturitetna\Splet2\maturitetna-SpletnaStran\maturitetna-NovaTestnaStran\bin\Debug\net6.0\maturitetna-NovaTestnaStran.exe
 C:\Users\sandi\OneDrive\Documents\Aleksander\School\4-Letnik\Maturitetna\Splet2\maturitetna-SpletnaStran\maturitetna-NovaTestnaStran\bin\Debug\net6.0\maturitetna-NovaTestnaStran.deps.json
@@ -1139,3 +1138,4 @@ C:\Users\sandi\OneDrive\Documents\Aleksander\School\4-Letnik\Maturitetna\Splet2\
 C:\Users\sandi\OneDrive\Documents\Aleksander\School\4-Letnik\Maturitetna\Splet2\maturitetna-SpletnaStran\maturitetna-NovaTestnaStran\obj\Debug\net6.0\maturitetna-NovaTestnaStran.pdb
 C:\Users\sandi\OneDrive\Documents\Aleksander\School\4-Letnik\Maturitetna\Splet2\maturitetna-SpletnaStran\maturitetna-NovaTestnaStran\obj\Debug\net6.0\maturitetna-NovaTestnaStran.genruntimeconfig.cache
 C:\Users\sandi\OneDrive\Documents\Aleksander\School\4-Letnik\Maturitetna\Splet2\maturitetna-SpletnaStran\maturitetna-NovaTestnaStran\obj\Debug\net6.0\ref\maturitetna-NovaTestnaStran.dll
+C:\Users\sandi\OneDrive\Documents\Aleksander\School\4-Letnik\Maturitetna\Splet2\maturitetna-SpletnaStran\maturitetna-NovaTestnaStran\bin\Debug\net6.0\appsettings.json

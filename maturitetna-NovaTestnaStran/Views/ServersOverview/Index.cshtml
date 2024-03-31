@@ -139,7 +139,7 @@
     }
 
         .custom-table thead th {
-            background-color: #007bff; /* Bootstrap primary blue */
+            background-color: #007bff; 
             color: white;
         }
 
@@ -262,7 +262,6 @@
                 } catch (e) {
                     console.error("Error parsing MQTT message:", e);
                 }
-                // Hide the loading screen whether or not there was an error
                 $("#loadingScreen").hide();
             });
 
@@ -270,7 +269,6 @@
                 if (!connected) {
                     console.error("Failed to establish MQTT connection on port " + port);
                     $("#loadingScreen").hide();
-                    // Attempt to connect to the alternative port
                     if (port == 8080) {
                         connectToMQTT(8081, serverId);
                     } else if (port == 8081) {

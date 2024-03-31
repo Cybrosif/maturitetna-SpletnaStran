@@ -134,6 +134,24 @@
         font-size: 20px;
     }
 
+    .custom-table {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+        .custom-table thead th {
+            background-color: #007bff; /* Bootstrap primary blue */
+            color: white;
+        }
+
+        .custom-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .custom-table tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+
 </style>
 @* <div class="sidebar glass">
     <ul class="list-unstyled">
@@ -143,7 +161,7 @@
 </div> *@
 
 <div id="loadingScreen">
-    <div class="loader">
+    <div class="loader"> 
         <div class="inner one"></div>
         <div class="inner two"></div>
         <div class="inner three"></div>
@@ -152,7 +170,7 @@
 
 
 <div class="server-switch">
-    <button id="prevServer" class="server-switch-btn">&lt;</button>
+    @* <button id="prevServer" class="server-switch-btn">&lt;</button> *@
     <select class="form-select" id="serverSelect" aria-label="Default select example">
         <option selected>Izberite strežnik</option>
         @foreach (var item in Model.Servers)
@@ -160,7 +178,7 @@
             <option value="@item.Id">@item.ServerName</option>
         }
     </select>
-    <button id="nextServer" class="server-switch-btn">&gt;</button>
+@*     <button id="nextServer" class="server-switch-btn">&gt;</button> *@
 </div>
 
 <div class="main-content">
@@ -192,26 +210,29 @@
         <h4>Trdi disk podatki</h4>
         <div id="diskProgressContainer"></div>
     </div>
-    
+
     <div class="dashboard-item glass full-width">
-        <h4>Zgodovina</h4>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="cpu-tab" data-bs-toggle="tab" data-bs-target="#cpu" type="button" role="tab" aria-controls="cpu" aria-selected="true">Cpu</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="ram-tab" data-bs-toggle="tab" data-bs-target="#ram" type="button" role="tab" aria-controls="ram" aria-selected="false">Ram</button>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="cpu" role="tabpanel" aria-labelledby="cpu-tab">
-                <canvas id="cpuHistoryChart"></canvas>
-            </div>
-            <div class="tab-pane fade" id="ram" role="tabpanel" aria-labelledby="ram-tab">
-                <canvas id="ramHistoryChart"></canvas>
-            </div>
+        <div class="d-flex justify-content-between align-items-center">
+            <h4>Izpadi</h4>
+            <button class="btn btn-primary">Izpadi</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover custom-table">
+                <thead>
+                    <tr>
+                        <th>ID Izpada</th>
+                        <th>Datum Izpada</th>
+                        <th>Razlog</th>
+                    </tr>
+                </thead>
+                <tbody id="outagesTableBody">
+                 @*    NEKI NEKI *@
+                </tbody>
+            </table>
         </div>
     </div>
+
+
 </div>
 
 

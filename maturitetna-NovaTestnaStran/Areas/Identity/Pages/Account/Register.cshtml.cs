@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace maturitetna_NovaTestnaStran.Areas.Identity.Pages.Account
@@ -112,8 +113,8 @@ namespace maturitetna_NovaTestnaStran.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
 
-            // [Required]
-            // public string? Role { get; set; }
+            [Required]
+            public string RoleId { get; set; }
             
             [Required]
             public int DomainId { get; set; }
@@ -128,6 +129,16 @@ namespace maturitetna_NovaTestnaStran.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             ViewData["DomainId"] = new SelectList(_context.Domain, "Id", "Domain");
+            var allRoles = await _roleManager.Roles.ToListAsync();
+            var roleItems = allRoles.Select(r => new SelectListItem
+            {
+                Text = r.Name,
+                Value = r.Id,
+            }).ToList();
+
+            ViewData["RoleId"] = new SelectList(roleItems, "Text", "Text");
+
+
             Input = new InputModel()
             {
                 RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
@@ -155,7 +166,9 @@ namespace maturitetna_NovaTestnaStran.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    await _userManager.AddToRoleAsync(user, "User");
+
+                    var selectedRoleId = Input.RoleId;
+                    await _userManager.AddToRoleAsync(user, selectedRoleId);
                     var userId = await _userManager.GetUserIdAsync(user);
                     
                     var userDomainEntity = new UserDomainEntity

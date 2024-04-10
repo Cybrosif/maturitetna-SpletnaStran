@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace maturitetna_NovaTestnaStran.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ApplicationRoles : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;

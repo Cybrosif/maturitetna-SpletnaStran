@@ -62,10 +62,11 @@
          function connectToMQTT(port, serverId) {
                                        let connected = false;
                                        const client = mqtt.connect('ws://test.mosquitto.org:' + port);
+                                        var targetDomain = ('@Model.Domain');
                            
                                        client.on("connect", function () {
                                            console.log("Connected to MQTT broker over WebSocket on port " + port);
-                                           client.subscribe("MojaDomena1/offlineservers");
+                                           client.subscribe(targetDomain + "/offlineservers");
                                            connected = true;
                                        });
                                        client.on("message", function (topic, message) {

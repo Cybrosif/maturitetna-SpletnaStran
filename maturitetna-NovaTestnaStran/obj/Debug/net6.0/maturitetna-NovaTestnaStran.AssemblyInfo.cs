@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("maturitetna-NovaTestnaStran")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7834f939bba01bdf031b28d29f562ec92c060fb8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d2fc156765e95e46042cde315a0e2be2a133222d")]
 [assembly: System.Reflection.AssemblyProductAttribute("maturitetna-NovaTestnaStran")]
 [assembly: System.Reflection.AssemblyTitleAttribute("maturitetna-NovaTestnaStran")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

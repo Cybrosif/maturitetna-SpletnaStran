@@ -25,6 +25,7 @@ public class DashboardController : Controller
         
         
         string targetDomain = await getUserDomain();
+        viewModel.Domain = targetDomain;
         
         viewModel.Servers = await _context.Servers
             .Where(server => server.Domain.Domain == targetDomain)

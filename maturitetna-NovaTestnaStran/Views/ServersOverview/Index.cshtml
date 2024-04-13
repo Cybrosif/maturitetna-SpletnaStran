@@ -136,6 +136,7 @@
         </div>
         <div class="dashboard-item glass quarter">
             <h4>Run Time</h4>
+            <p id="runTime"></p>
         </div>
         <div class="dashboard-item glass quarter">
             <h4>Stanje MailServer</h4>
@@ -301,7 +302,7 @@
                     to: { color: '#ED6A5A' },
                     step: (state, bar) => {
                         // Update the text as needed (e.g., used space / total space)
-                        bar.setText("Update the text here");
+                        bar.setText("25/100");
                     }
                 };
             }
@@ -336,7 +337,22 @@
         function updateGraphs(valuesInJson) { 
                 updateGauge(cpuGaugeInstance, parseFloat(valuesInJson.CpuUsage).toFixed(2));
                 updateGauge(ramGaugeInstance, parseFloat(valuesInJson.UsedMemory).toFixed(2));
-                
+
+                let TotalSizeMB = valuesInJson.TotalSizeMB || 0;
+                let AvailableFreeSpaceMB = valuesInJson.AvailableFreeSpaceMB || 0; 
+                let FreeSpacePercentage = (AvailableFreeSpaceMB / TotalSizeMB);
+                updateProgressBar(diskProgressBarInstance, FreeSpacePercentage.toFixed(2));
+
+            let SystemUpTime = valuesInJson.SystemUptime;
+            //console.log(SystemUpTime);
+            $("#runTime").html(SystemUpTime);
+
+
+
+            console.log(TotalSizeMB);
+            console.log(AvailableFreeSpaceMB);
+            console.log(FreeSpacePercentage);
+                //updateProgressBar(diskProgressBarInstance, parseFloat(valuesInJson.AvailableFreeSpaceMB).toFixed(2))
                 
             }
         
@@ -344,6 +360,11 @@
                 gaugeInstance.data.datasets[0].value = value;
                 gaugeInstance.update();
             }
+        function updateProgressBar(barInstance, value) {
+            //diskProgressBarConfig.bar.setText("test")
+            //barInstance.bar.setText("test");
+            barInstance.animate(value);
+        }
         
         $('#myTab button').on('click', function (e) {
                 var tabId = $(this).attr('aria-controls');

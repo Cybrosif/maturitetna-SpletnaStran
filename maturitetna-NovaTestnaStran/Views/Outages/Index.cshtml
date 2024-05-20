@@ -1,0 +1,77 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<style>
+    .outages-table-container {
+        max-width: 100%;
+        margin: 20px auto;
+        overflow-x: auto;
+    }
+
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        min-width: 400px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+        .custom-table thead tr {
+            background-color: #007bff;
+            color: white;
+            text-align: left;
+        }
+
+        .custom-table th,
+        .custom-table td {
+            padding: 12px 15px;
+        }
+
+        .custom-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+            .custom-table tbody tr:nth-of-type(even) {
+                background-color: #f3f3f3;
+            }
+
+            .custom-table tbody tr:last-of-type {
+                border-bottom: 2px solid #009879;
+            }
+
+            .custom-table tbody tr.active-row {
+                font-weight: bold;
+                color: #009879;
+            }
+
+</style>
+<body>
+    <div class="main-content">
+        <div class="dashboard-item glass full-width">
+            <h4>Izpadi</h4>
+            <div class="outages-table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>ID Izpada</th>
+                            <th>Datum Izpada</th>
+                            <th>Razlog</th>
+                        </tr>
+                    </thead>
+                         <tbody id="outagesTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+

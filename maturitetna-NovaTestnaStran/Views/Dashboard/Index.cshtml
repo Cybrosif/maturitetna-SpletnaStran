@@ -1,20 +1,20 @@
-﻿
-   <div class="container">
-        @for (int i = 1; i <= 100; i += 3)
-        {
-            <div class="row mt-4">
-                @for (int j = i; j < i + 3 && j <= 100; j++)
-                {
-                    <div class="col-md-4">
+﻿<div class="container">
+    @for (int i = 1; i <= 100; i += 3)
+    {
+        <div class="row mt-4">
+            @for (int j = i; j < i + 3 && j <= 100; j++)
+            {
+                <div class="col-md-4">
+                    <a asp-page="/Outages/Index" class="server-link">
                         <div class="glass-server">
                             <h3>Server @j</h3>
-                            <img src="@($"server")" alt="@($"Server Logo")" class="server-logo">
+                            @*<img src="@Url.Content("~/images/server.png")" alt="Server Logo" class="server-logo"> *@
                             <p>ŠIPTAR @j...</p>
                             <div class="status-indicator"></div>
-
                         </div>
-                    </div>
-                }
-            </div>
-        }
-    </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>

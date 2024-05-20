@@ -5,6 +5,18 @@
       "PackagePath": "staticwebassets\\maturitetna-NovaTestnaStran.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\sandi\\OneDrive\\Documents\\Aleksander\\School\\4-Letnik\\Maturitetna\\Splet2\\maturitetna-SpletnaStran\\maturitetna-NovaTestnaStran\\wwwroot\\Imgs\\Background.jpg",
+      "PackagePath": "staticwebassets\\Imgs\\Background.jpg"
+    },
+    {
+      "Id": "C:\\Users\\sandi\\OneDrive\\Documents\\Aleksander\\School\\4-Letnik\\Maturitetna\\Splet2\\maturitetna-SpletnaStran\\maturitetna-NovaTestnaStran\\wwwroot\\Imgs\\ServerIcon.png",
+      "PackagePath": "staticwebassets\\Imgs\\ServerIcon.png"
+    },
+    {
+      "Id": "C:\\Users\\sandi\\OneDrive\\Documents\\Aleksander\\School\\4-Letnik\\Maturitetna\\Splet2\\maturitetna-SpletnaStran\\maturitetna-NovaTestnaStran\\wwwroot\\Imgs\\ServerLogo.png",
+      "PackagePath": "staticwebassets\\Imgs\\ServerLogo.png"
+    },
+    {
       "Id": "C:\\Users\\sandi\\OneDrive\\Documents\\Aleksander\\School\\4-Letnik\\Maturitetna\\Splet2\\maturitetna-SpletnaStran\\maturitetna-NovaTestnaStran\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

@@ -1,15 +1,48 @@
-﻿<div class="container">
-    @for (int i = 1; i <= 100; i += 3)
+﻿<style>
+    body {
+        background-color: #f8f9fa;
+        background-image: url('@Url.Content("~/Imgs/Background.jpg")');
+        background-repeat: repeat;
+        background-size: auto;
+    }
+    .server-logo {
+        width: 250px;
+        height: 250px;
+        display: block;
+        margin-top: -50px; 
+        margin-inline: auto;
+    }
+    .server-link {
+        text-decoration: none; 
+        color: inherit; 
+    }
+    .glass-server {
+        cursor: pointer;
+        max-height: 220px; 
+        margin: 0 auto;
+        padding: 10px; 
+        background-color: #f8f9fa; 
+        border-radius: 10px; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        text-align: center; 
+    }
+    h3 {
+        margin: 0;
+    }
+</style>
+
+<div class="container">
+    @for (int i = 1; i <= 90; i += 3)
     {
         <div class="row mt-4">
-            @for (int j = i; j < i + 3 && j <= 100; j++)
+            @for (int j = i; j < i + 3 && j <= 90; j++)
             {
                 <div class="col-md-4">
-                    <a asp-page="/Outages/Index" class="server-link">
+                    <a asp-controller="Outages" asp-action="Index" class="server-link">
                         <div class="glass-server">
                             <h3>Server @j</h3>
-                            @*<img src="@Url.Content("~/images/server.png")" alt="Server Logo" class="server-logo"> *@
-                            <p>ŠIPTAR @j...</p>
+                            <img src="~/Imgs/ServerIcon.png" alt="Server Logo" class="server-logo" />
+                                @*<p>ŠIPTAR @j...</p> *@
                             <div class="status-indicator"></div>
                         </div>
                     </a>

@@ -11,13 +11,18 @@
         background-repeat: no-repeat;
         background-size: cover;
     }
+
+    .btn-margin {
+        margin-top: 20px;
+        margin-right: 10px;
+    }
 </style>
 
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
-    <a asp-area="Identity" asp-page="/Account/Register">Create New</a>
+    <a asp-action="Create" class="btn btn-primary btn-margin">Ustvari</a>
+    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary btn-margin">Ustvari</a>
 </p>
 <table class="table">
     <thead>
@@ -28,28 +33,19 @@
             <th>
                 Email
             </th>
-            <th>
-                3
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
                     @item.Id
-            </td>
-            <td>
+                </td>
+                <td>
                     @item.Email
-            </td>
-            <td>
-                3
-            </td>
-            <td>
-                4
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

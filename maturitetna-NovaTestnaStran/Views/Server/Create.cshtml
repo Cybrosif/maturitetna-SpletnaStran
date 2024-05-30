@@ -1,20 +1,35 @@
 ﻿@model maturitetna_NovaTestnaStran.Models.ServerEntity
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Ustvari Server";
 }
 
-<h1>Create</h1>
+<style>
+    body {
+        background-color: #f8f9fa;
+        background-image: url('@Url.Content("~/Imgs/Background.jpg")');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 
-<h4>ServerEntity</h4>
+    .btn-back {
+        margin-top: 10px;
+    }
+
+    .btn-ustvari {
+        margin-top: 10px; 
+    }
+</style>
+
+<h1>Ustvari Server</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="rowr">
+    <div class="col-md-6 form-container">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="DomainId" class="control-label"></label>
-                <select asp-for="DomainId" class ="form-control" asp-items="ViewBag.DomainId"></select>
+                <select asp-for="DomainId" class="form-control" asp-items="ViewBag.DomainId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="ServerName" class="control-label"></label>
@@ -22,16 +37,18 @@
                 <span asp-validation-for="ServerName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Ustvari" class="btn btn-primary btn-ustvari" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="btn-back">
+    <a asp-action="Index" class="btn btn-secondary">Nazaj</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

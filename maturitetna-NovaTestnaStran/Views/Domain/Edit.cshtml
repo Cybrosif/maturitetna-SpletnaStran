@@ -1,12 +1,24 @@
 ﻿@model maturitetna_NovaTestnaStran.Models.DomainEntity
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Uredi";
 }
 
-<h1>Edit</h1>
+<style>
+    body {
+        background-color: #f8f9fa;
+        background-image: url('@Url.Content("~/Imgs/Background.jpg")');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 
-<h4>DomainEntity</h4>
+    .btn-margin {
+        margin-top: 10px;
+    }
+</style>
+
+<h1>Uredi</h1>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,16 +31,18 @@
                 <span asp-validation-for="Domain" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Shrani" class="btn btn-primary btn-margin" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary btn-margin">Nazaj</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
